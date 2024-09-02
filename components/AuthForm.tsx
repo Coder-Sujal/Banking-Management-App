@@ -15,6 +15,8 @@ import { Loader } from "lucide-react";
 import SignIn from "@/app/(auth)/sign-in/page";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/lib/actions/user.actions";
+import PlaidLink from "./PlaidLink";
+import { PasswordHash } from "node-appwrite";
 
 const AuthForm = ({ type }: { type: String }) => {
   const router = useRouter();
@@ -32,8 +34,20 @@ const AuthForm = ({ type }: { type: String }) => {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
+      const userData = {
+        firstName : data.firstName!,
+        lastName : data.lastName!,
+        address1 : data.address1!,
+        city : data.city!,
+        state: data.state!,
+        postalCode : data.postalCode!,
+        dateOfBirth : data.dateOfBirth!,
+        ssn : data.ssn!,
+        email : data.email,
+        password : data.password,
+      }
       if (type === "sign-up") {
-        const newUser = await signUp(data);
+        const newUser = await signUp(userData);
         setUser(newUser);
       }
       if (type === "sign-in") {
@@ -78,7 +92,7 @@ const AuthForm = ({ type }: { type: String }) => {
         </div>
       </header>
       {user ? (
-        <div className="flex flex-col gap-4">{/*PlaidLink*/}</div>
+        <div className="flex flex-col gap-4"><PlaidLink user={user} variant="primary" /></div>
       ) : (
         <>
           <Form {...form}>
@@ -120,7 +134,7 @@ const AuthForm = ({ type }: { type: String }) => {
                       control={form.control}
                       name="state"
                       label="State"
-                      placeholder="Example: Gujarat"
+                      placeholder="Example: GJ"
                       type="text"
                     />
                     <InputFragment
@@ -134,7 +148,7 @@ const AuthForm = ({ type }: { type: String }) => {
                   <div className="flex gap-4">
                     <InputFragment
                       control={form.control}
-                      name="dob"
+                      name="dateOfBirth"
                       label="Date Of Birth"
                       placeholder="YYYY-MM-DD"
                       type="text"

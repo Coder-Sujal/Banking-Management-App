@@ -5,7 +5,8 @@ import { getLoggedInUser } from "@/lib/actions/user.actions";
 import React from "react";
 
 const Home = async () => {
-  const loggedin = await getLoggedInUser();
+  const loggedin = await getLoggedInUser(); 
+  console.log(loggedin);
   return (
     <section className="home">
       <div className="home-content">
@@ -24,7 +25,11 @@ const Home = async () => {
         </header>
         RECENT TRANSACTIONS
       </div>
-      <RightSiderbar user={loggedin} transactions={[]} banks={[{currentBalance:123.50},{currentBalance:500}]} />
+      <RightSiderbar
+        user={loggedin}
+        transactions={[]}
+        banks={[{ currentBalance: 123.5 }, { currentBalance: 500 }]}
+      />
     </section>
   );
 };
